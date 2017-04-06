@@ -13,9 +13,34 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <Clock />
+        <ToggleButton />
       </div>
     );
+  }
+}
+
+class ToggleButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isToggled: false
+    };
+    this.clickToggleHandler = this.clickToggleHandler.bind(this);
+  }
+
+  clickToggleHandler() {
+    this.setState(prevState => ({
+      isToggled: !prevState.isToggled
+    }));
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.isToggled && <Clock />}
+        <button onClick={this.clickToggleHandler}>Click Me</button>
+      </div>
+    )
   }
 }
 
@@ -37,9 +62,9 @@ class Clock extends React.Component {
   }
 
   tick() {
-    this.setState({
+    this.setState(prevState => ({
       date: new Date()
-    });
+    }));
   }
 
   componentDidMount() {
