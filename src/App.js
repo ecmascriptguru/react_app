@@ -10,6 +10,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
+        <Calculator />
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
@@ -19,6 +20,43 @@ class App extends Component {
   }
 }
 
+class BoilVerdict extends React.Component {
+  render() {
+    if (this.props.celsius >= 100) {
+      return (<p>The water would boil</p>);
+    } else {
+      return (<p>The water would not boil.</p>);
+    }
+  }
+}
+
+class Calculator extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      temperature: ''
+    };
+
+    this.handleChanges = this.handleChanges.bind(this);
+  }
+
+  handleChanges(event) {
+    this.setState({temperature: event.target.value});
+  }
+
+  render() {
+    return (
+      <fieldset>
+        <legend>Enter Temperature in Celsius:</legend>
+        <input 
+          onChange={this.handleChanges}
+          value={this.state.temperature}
+        />
+        <BoilVerdict celsius={parseFloat(this.state.temperature)}/>
+      </fieldset>
+    )
+  }
+}
 class ToggleButton extends React.Component {
   constructor(props) {
     super(props);
