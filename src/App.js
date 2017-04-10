@@ -5,42 +5,60 @@ import './App.css';
 class Square extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
         this.state = {
-            value: ""
+            value: null
         };
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(event) {
-        this.setState((prevState) => ({
-            value: "X"
-        }))
-        event.preventDefault();
+        this.props.onHandleClick(this.props.index);
     }
+    
     render() {
         return (
             <button 
                 className="square"
                 onClick={this.handleClick}
             >
-                {this.state.value}
+                {this.props.value}
             </button>
         );
     }
 }
 
 class Board extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            squares: Array(9).fill(null),
+            isNextX: true
+        };
+        this.onHandleClick = this.onHandleClick.bind(this);
+    }
+
+    onHandleClick(key) {
+        const squares = this.state.squares.slice();
+        squares[key] = (this.state.isNextX) ? "X" : "O";
+        this.setState((prev) => ({
+            squares: squares,
+            isNextX: !prev.isNextX
+        }));
+    }
+
     renderSquare(key) {
         return (
             <Square
                 key={key}
-                id={key}
+                value={this.state.squares[key]}
+                onHandleClick={this.onHandleClick}
+                index={key}
             />
         );
     }
 
     render() {
-        const status = "Next Player: X";
+        const status = "Next Player: " + ((this.state.isNextX) ? "X" : "O");
         return (
             <div>
                 <div className="status">{status}</div>
